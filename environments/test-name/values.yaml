@@ -1,0 +1,10 @@
+labels:
+  owner: test owner
+  ticket: PT-184
+postgres:
+  persistence:
+    storageClass: longhorn
+    size: 1Gi
+app:
+  branch: main
+  domain: test-domain
