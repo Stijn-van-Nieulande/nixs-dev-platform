@@ -9,7 +9,7 @@ spec:
         repoURL: https://github.com/Stijn-van-Nieulande/nixs-dev-platform.git
         revision: HEAD
         directories:
-          - path: "environments/*.yaml"
+          - path: "environments/*"
   template:
     metadata:
       name: "supabase-{{path.basename}}"
