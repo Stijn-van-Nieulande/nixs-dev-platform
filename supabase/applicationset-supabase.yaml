@@ -9,10 +9,10 @@ spec:
         repoURL: https://github.com/Stijn-van-Nieulande/nixs-dev-platform.git
         revision: HEAD
         directories:
-          - path: environments/*
+          - path: "environments/*.yaml"
   template:
     metadata:
-      name: supabase-{{path.basename}}
+      name: "supabase-{{path.basename}}"
     spec:
       project: default
       source:
@@ -24,7 +24,7 @@ spec:
             - "../environments/{{path.basename}}/values.yaml" # relative to the chart path
       destination:
         server: https://kubernetes.default.svc
-        namespace: {{path.basename}} # creates namespace per environment
+        namespace: "{{path.basename}}" # creates namespace per environment
       syncPolicy:
         automated:
           prune: true
