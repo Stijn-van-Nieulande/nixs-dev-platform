@@ -21,7 +21,7 @@ spec:
         path: charts/supabase-wrapper # use the wrapper chart in this repo
         helm:
           valueFiles:
-            - ../environments/{{path.basename}}/values.yaml # relative to the chart path
+            - "../environments/{{path.basename}}/values.yaml" # relative to the chart path
       destination:
         server: https://kubernetes.default.svc
         namespace: {{path.basename}} # creates namespace per environment
