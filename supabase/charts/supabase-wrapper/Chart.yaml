@@ -6,4 +6,5 @@ type: application
 dependencies:
   - name: supabase
     version: "0.0.3"
-    repository: "https://github.com/supabase-community/supabase-kubernetes"
+    repository: "https://raw.githubusercontent.com/supabase-community/supabase-kubernetes/refs/heads/main"
+    # repository: "https://github.com/supabase-community/supabase-kubernetes"
