@@ -18,7 +18,7 @@ spec:
       source:
         repoURL: https://github.com/Stijn-van-Nieulande/nixs-dev-platform.git
         targetRevision: HEAD
-        path: charts/supabase-wrapper # use the wrapper chart in this repo
+        path: supabase/charts/supabase-wrapper # use the wrapper chart in this repo
         helm:
           valueFiles:
             - "../../environments/{{path.basename}}/values.yaml" # relative to the chart path
