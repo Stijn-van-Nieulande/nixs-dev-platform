@@ -21,7 +21,7 @@ spec:
         path: supabase/charts/supabase-wrapper # use the wrapper chart in this repo
         helm:
           valueFiles:
-            - "./values.yaml" # relative to the chart path
+            - "../../charts/supabase-wrapper/values.yaml" # relative to the chart path
             - "../../environments/{{path.basename}}/values.yaml" # relative to the chart path
       destination:
         server: https://kubernetes.default.svc
