@@ -6,5 +6,5 @@ type: application
 dependencies:
   - name: supabase
     version: "0.2.0"
-    repository: "https://harbor.ndev.stijndevelopment.nl/library/supabase"
+    repository: "oci://harbor.ndev.stijndevelopment.nl/library"
     # repository: "https://github.com/supabase-community/supabase-kubernetes"
