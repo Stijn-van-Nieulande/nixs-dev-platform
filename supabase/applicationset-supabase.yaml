@@ -15,13 +15,24 @@ spec:
       name: "supabase-{{path.basename}}"
     spec:
       project: default
-      source:
-        repoURL: https://github.com/Stijn-van-Nieulande/nixs-dev-platform.git
-        targetRevision: HEAD
-        path: supabase/charts/supabase-wrapper # use the wrapper chart in this repo
-        # helm:
-        #   valueFiles:
-        #     - "../../environments/{{path.basename}}/values.yaml" # relative to the chart path
+      sources:
+        - repoURL: https://github.com/Stijn-van-Nieulande/nixs-dev-platform.git
+          path: supabase/charts/supabase-wrapper
+          targetRevision: HEAD
+          helm:
+            valueFiles:
+              - $values/values.yaml # value file path relative to the $values source root
+        - repoURL: https://github.com/Stijn-van-Nieulande/nixs-dev-platform.git
+          path: supabase/environments/{{path.basename}}
+          targetRevision: HEAD
+          ref: values # maps this source to the $values prefix
+      # source:
+      #   repoURL: https://github.com/Stijn-van-Nieulande/nixs-dev-platform.git
+      #   targetRevision: HEAD
+      #   path: supabase/charts/supabase-wrapper # use the wrapper chart in this repo
+      #   helm:
+      #     valueFiles:
+      #       - "../../environments/{{path.basename}}/values.yaml" # relative to the chart path
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{path.basename}}" # creates namespace per environment
@@ -42,9 +53,3 @@ spec:
           kind: StatefulSet
           jsonPointers:
             - /spec/replicas
-  templatePatch: |
-    spec:
-      source:
-        helm:
-          valueFiles:
-            - "../../environments/{{path.basename}}/values.yaml"
