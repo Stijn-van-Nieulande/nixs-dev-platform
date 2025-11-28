@@ -1,10 +1,10 @@
 apiVersion: v2
 name: supabase-wrapper
 description: "Wrapper chart to deploy Supabase and run PostSync Job to apply functions from backend repo"
-version: 0.0.3
+version: 0.2.0
 type: application
 dependencies:
   - name: supabase
-    version: "0.0.3"
-    repository: "https://raw.githubusercontent.com/supabase-community/supabase-kubernetes/refs/heads/main"
+    version: "0.2.0"
+    repository: "https://harbor.ndev.stijndevelopment.nl/library/supabase"
     # repository: "https://github.com/supabase-community/supabase-kubernetes"
