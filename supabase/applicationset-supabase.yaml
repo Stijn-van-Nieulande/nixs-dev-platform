@@ -19,9 +19,9 @@ spec:
         repoURL: https://github.com/Stijn-van-Nieulande/nixs-dev-platform.git
         targetRevision: HEAD
         path: supabase/charts/supabase-wrapper # use the wrapper chart in this repo
-        helm:
-          valueFiles:
-            - "../../environments/{{path.basename}}/values.yaml" # relative to the chart path
+        # helm:
+        #   valueFiles:
+        #     - "../../environments/{{path.basename}}/values.yaml" # relative to the chart path
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{path.basename}}" # creates namespace per environment
@@ -42,3 +42,9 @@ spec:
           kind: StatefulSet
           jsonPointers:
             - /spec/replicas
+  templatePatch: |
+    spec:
+      source:
+        helm:
+          valueFiles:
+            - "../../environments/{{path.basename}}/values.yaml"
