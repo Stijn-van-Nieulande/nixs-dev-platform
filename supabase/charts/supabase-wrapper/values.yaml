@@ -1,178 +1,179 @@
 # Defaults for supabase-wrapper. Per-environment values override these.
 replicaCount: 1
 
-secret:
-  jwt:
-    secretRef: "supabase-secrets"
-    secretRefKey:
-      anonKey: jwt-anonKey
-      serviceKey: jwt-serviceKey
-      secret: jwt-secret
+supabase:
+  secret:
+    jwt:
+      secretRef: "supabase-secrets"
+      secretRefKey:
+        anonKey: jwt-anonKey
+        serviceKey: jwt-serviceKey
+        secret: jwt-secret
+    db:
+      secretRef: "supabase-secrets"
+      secretRefKey:
+        password: db-password
+        database: db-database
+    analytics:
+      secretRef: "supabase-secrets"
+      secretRefKey:
+        publicAccessToken: analytics-publicAccessToken
+        privateAccessToken: analytics-privateAccessToken
+    smtp:
+      secretRef: "supabase-secrets"
+      secretRefKey:
+        username: smtp-username
+        password: smtp-password
+    dashboard:
+      secretRef: "supabase-secrets"
+      secretRefKey:
+        username: dashboard-username
+        password: dashboard-password
+        openAiApiKey: dashboard-openAiApiKey
+    # TODO: Add S3 via minio
+    realtime:
+      secretRef: "supabase-secrets"
+      secretRefKey:
+        secretKeyBase: realtime-secretKeyBase
+    meta:
+      secretRef: "supabase-secrets"
+      secretRefKey:
+        cryptoKey: meta-cryptoKey
+
   db:
-    secretRef: "supabase-secrets"
-    secretRefKey:
-      password: db-password
-      database: db-database
-  analytics:
-    secretRef: "supabase-secrets"
-    secretRefKey:
-      publicAccessToken: analytics-publicAccessToken
-      privateAccessToken: analytics-privateAccessToken
-  smtp:
-    secretRef: "supabase-secrets"
-    secretRefKey:
-      username: smtp-username
-      password: smtp-password
-  dashboard:
-    secretRef: "supabase-secrets"
-    secretRefKey:
-      username: dashboard-username
-      password: dashboard-password
-      openAiApiKey: dashboard-openAiApiKey
-  # TODO: Add S3 via minio
+    enabled: true
+    image:
+      tag: 15.8.1.085
+    livenessProbe:
+      exec:
+        command:
+          - pg_isready
+          - -U
+          - postgres
+      initialDelaySeconds: 3
+    persistence:
+      enabled: true
+      storageClassName: longhorn
+      size: 1Gi
+
+  studio:
+    image:
+      tag: 2025.11.10-sha-5291fe3
+    environment:
+      DEFAULT_ORGANIZATION_NAME: Default Organization
+      DEFAULT_PROJECT_NAME: Default Project
+      SUPABASE_PUBLIC_URL: http://supabase.something.tld
+      NEXT_PUBLIC_ENABLE_LOGS: true
+
+  auth:
+    image:
+      tag: v2.182.1
+    environment:
+      API_EXTERNAL_URL: http://supabase.something.tld
+      GOTRUE_SITE_URL: http://supabase.something.tld
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_MAILER_AUTOCONFIRM: "true"
+      GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@supabase.something.tld"
+      GOTRUE_SMTP_HOST: "smtp.supabase.something.tld"
+      GOTRUE_SMTP_PORT: "587"
+      GOTRUE_SMTP_SENDER_NAME: "your-mail@supabase.something.tld"
+
+  rest:
+    image:
+      tag: v13.0.7
+
   realtime:
-    secretRef: "supabase-secrets"
-    secretRefKey:
-      secretKeyBase: realtime-secretKeyBase
+    image:
+      tag: v2.63.0
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 4000
+      initialDelaySeconds: 3
+
   meta:
-    secretRef: "supabase-secrets"
-    secretRefKey:
-      cryptoKey: meta-cryptoKey
+    image:
+      tag: v0.93.1
 
-db:
-  enabled: true
-  image:
-    tag: 15.8.1.085
-  livenessProbe:
-    exec:
-      command:
-        - pg_isready
-        - -U
-        - postgres
-    initialDelaySeconds: 3
-  persistence:
-    enabled: true
-    storageClassName: longhorn
-    size: 1Gi
+  # TODO: Fix storage
+  storage:
+    image:
+      tag: v1.29.0
+    livenessProbe:
+      httpGet:
+        path: /status
+        port: 5000
+      initialDelaySeconds: 3
+    persistence:
+      enabled: false
 
-studio:
-  image:
-    tag: 2025.11.10-sha-5291fe3
-  environment:
-    DEFAULT_ORGANIZATION_NAME: Default Organization
-    DEFAULT_PROJECT_NAME: Default Project
-    SUPABASE_PUBLIC_URL: http://supabase.something.tld
-    NEXT_PUBLIC_ENABLE_LOGS: true
+  imgproxy:
+    image:
+      tag: v3.8.0
+    environment:
+      IMGPROXY_ENABLE_WEBP_DETECTION: "true"
+    livenessProbe:
+      exec:
+        command:
+          - imgproxy
+          - health
+      initialDelaySeconds: 3
+    persistence:
+      enabled: false
 
-auth:
-  image:
-    tag: v2.182.1
-  environment:
-    API_EXTERNAL_URL: http://supabase.something.tld
-    GOTRUE_SITE_URL: http://supabase.something.tld
-    GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
-    GOTRUE_MAILER_AUTOCONFIRM: "true"
-    GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@supabase.something.tld"
-    GOTRUE_SMTP_HOST: "smtp.supabase.something.tld"
-    GOTRUE_SMTP_PORT: "587"
-    GOTRUE_SMTP_SENDER_NAME: "your-mail@supabase.something.tld"
+  kong:
+    image:
+      repository: kong
+      tag: 2.8.1
+    environment:
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/kong.yml
+      KONG_LOG_LEVEL: info
+    ingress:
+      enabled: true
+      className: "traefik"
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+        cert-manager.io/cluster-issuer: "letsencrypt-staging"
+        kubernetes.io/tls-acme: "true"
+      tls:
+        []
+        # - secretName: supabase-tls
+        #   hosts:
+        #     - supabase.something.tld
+      hosts:
+        - host: supabase.something.tld
+          paths:
+            - path: /
+              pathType: Prefix
 
-rest:
-  image:
-    tag: v13.0.7
+  analytics:
+    image:
+      tag: 1.22.6
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 4000
+      initialDelaySeconds: 3
 
-realtime:
-  image:
-    tag: v2.63.0
-  livenessProbe:
-    httpGet:
-      path: /
-      port: 4000
-    initialDelaySeconds: 3
+  vector:
+    image:
+      tag: 0.28.1-alpine
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 9001
+      initialDelaySeconds: 3
+    ## Vector requires logs from the control plane to function.
+    ## This is normally stored in /var/log/pods
+    ## Modify these values according to your environment.
+    volumeMounts:
+      - name: pod-logs
+        mountPath: /var/log/pods
+    volumes:
+      - name: pod-logs
+        hostPath:
+          path: /var/log/pods
 
-meta:
-  image:
-    tag: v0.93.1
-
-# TODO: Fix storage
-storage:
-  image:
-    tag: v1.29.0
-  livenessProbe:
-    httpGet:
-      path: /status
-      port: 5000
-    initialDelaySeconds: 3
-  persistence:
-    enabled: false
-
-imgproxy:
-  image:
-    tag: v3.8.0
-  environment:
-    IMGPROXY_ENABLE_WEBP_DETECTION: "true"
-  livenessProbe:
-    exec:
-      command:
-        - imgproxy
-        - health
-    initialDelaySeconds: 3
-  persistence:
-    enabled: false
-
-kong:
-  image:
-    repository: kong
-    tag: 2.8.1
-  environment:
-    KONG_DECLARATIVE_CONFIG: /usr/local/kong/kong.yml
-    KONG_LOG_LEVEL: info
-  ingress:
-    enabled: true
-    className: "traefik"
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-      cert-manager.io/cluster-issuer: "letsencrypt-staging"
-      kubernetes.io/tls-acme: "true"
-    tls:
-      []
-      # - secretName: supabase-tls
-      #   hosts:
-      #     - supabase.something.tld
-    hosts:
-      - host: supabase.something.tld
-        paths:
-          - path: /
-            pathType: Prefix
-
-analytics:
-  image:
-    tag: 1.22.6
-  livenessProbe:
-    httpGet:
-      path: /health
-      port: 4000
-    initialDelaySeconds: 3
-
-vector:
-  image:
-    tag: 0.28.1-alpine
-  livenessProbe:
-    httpGet:
-      path: /health
-      port: 9001
-    initialDelaySeconds: 3
-  ## Vector requires logs from the control plane to function.
-  ## This is normally stored in /var/log/pods
-  ## Modify these values according to your environment.
-  volumeMounts:
-    - name: pod-logs
-      mountPath: /var/log/pods
-  volumes:
-    - name: pod-logs
-      hostPath:
-        path: /var/log/pods
-
-functions:
-  image:
-    tag: v1.68.4
+  functions:
+    image:
+      tag: v1.68.4
