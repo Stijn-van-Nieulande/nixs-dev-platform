@@ -210,6 +210,7 @@ supabase:
         cpu: "100m"
 
   analytics:
+    enabled: false # TODO: OOM bugs
     image:
       tag: 1.22.6
     livenessProbe:
