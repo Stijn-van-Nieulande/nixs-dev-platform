@@ -10,7 +10,10 @@ supabase:
     smtp:
       secretRef: "supabase-secrets-test-env"
     dashboard:
-      secretRef: "supabase-secrets-test-env"
+      secretRef: ""
+      username: "test"
+      password: "test"
+      openAiApiKey: "super_secret_key"
     realtime:
       secretRef: "supabase-secrets-test-env"
     meta:
