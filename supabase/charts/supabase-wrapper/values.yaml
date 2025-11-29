@@ -55,6 +55,13 @@ supabase:
       enabled: true
       storageClassName: longhorn
       size: 1Gi
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "200m"
+      limits:
+        memory: "768Mi"
+        cpu: "500m"
 
   studio:
     image:
@@ -64,6 +71,13 @@ supabase:
       DEFAULT_PROJECT_NAME: Default Project
       SUPABASE_PUBLIC_URL: http://supabase.something.tld
       NEXT_PUBLIC_ENABLE_LOGS: true
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "96Mi"
+        cpu: "100m"
 
   auth:
     image:
@@ -77,10 +91,24 @@ supabase:
       GOTRUE_SMTP_HOST: "smtp.supabase.something.tld"
       GOTRUE_SMTP_PORT: "587"
       GOTRUE_SMTP_SENDER_NAME: "your-mail@supabase.something.tld"
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "96Mi"
+        cpu: "100m"
 
   rest:
     image:
       tag: v13.0.7
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "96Mi"
+        cpu: "100m"
 
   realtime:
     image:
@@ -90,10 +118,24 @@ supabase:
         path: /
         port: 4000
       initialDelaySeconds: 3
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "96Mi"
+        cpu: "100m"
 
   meta:
     image:
       tag: v0.93.1
+    resources:
+      requests:
+        memory: "32Mi"
+        cpu: "25m"
+      limits:
+        memory: "48Mi"
+        cpu: "50m"
 
   # TODO: Fix storage
   storage:
@@ -106,6 +148,13 @@ supabase:
       initialDelaySeconds: 3
     persistence:
       enabled: false
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "96Mi"
+        cpu: "100m"
 
   imgproxy:
     image:
@@ -120,6 +169,13 @@ supabase:
       initialDelaySeconds: 3
     persistence:
       enabled: false
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "96Mi"
+        cpu: "100m"
 
   kong:
     image:
@@ -145,6 +201,13 @@ supabase:
           paths:
             - path: /
               pathType: Prefix
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "96Mi"
+        cpu: "100m"
 
   analytics:
     image:
@@ -154,6 +217,13 @@ supabase:
         path: /health
         port: 4000
       initialDelaySeconds: 3
+    resources:
+      requests:
+        memory: "32Mi"
+        cpu: "25m"
+      limits:
+        memory: "48Mi"
+        cpu: "50m"
 
   vector:
     image:
@@ -173,7 +243,65 @@ supabase:
       - name: pod-logs
         hostPath:
           path: /var/log/pods
+    resources:
+      requests:
+        memory: "32Mi"
+        cpu: "25m"
+      limits:
+        memory: "48Mi"
+        cpu: "50m"
 
   functions:
     image:
       tag: v1.68.4
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "96Mi"
+        cpu: "100m"
+# Minio
+# resources:
+#   requests:
+#     memory: "64Mi"
+#     cpu: "50m"
+#   limits:
+#     memory: "96Mi"
+#     cpu: "100m"
+
+# Minimal profile (requests ≈ 1184 Mi, limits ≈ 1776 Mi)
+# | Service    | request memory | request CPU | limit memory | limit CPU |
+# | ---------- | -------------: | ----------: | -----------: | --------: |
+# | db         |          512Mi |        200m |        768Mi |      500m |
+# | studio     |           64Mi |         50m |         96Mi |      100m |
+# | auth       |           64Mi |         50m |         96Mi |      100m |
+# | rest       |           64Mi |         50m |         96Mi |      100m |
+# | realtime   |           64Mi |         50m |         96Mi |      100m |
+# | meta       |           32Mi |         25m |         48Mi |       50m |
+# | storage    |           64Mi |         50m |         96Mi |      100m |
+# | imgproxy   |           64Mi |         50m |         96Mi |      100m |
+# | kong       |           64Mi |         50m |         96Mi |      100m |
+# | analytics  |           32Mi |         25m |         48Mi |       50m |
+# | vector     |           32Mi |         25m |         48Mi |       50m |
+# | functions  |           64Mi |         50m |         96Mi |      100m |
+# | minio      |           64Mi |         50m |         96Mi |      100m |
+# | **Totals** |     **1184Mi** |    **725m** |   **1776Mi** | **1550m** |
+
+# Conservative profile (requests ≈ 1824 Mi, limits ≈ 2736 Mi)
+# | Service    | request memory | request CPU | limit memory | limit CPU |
+# | ---------- | -------------: | ----------: | -----------: | --------: |
+# | db         |          768Mi |        300m |       1152Mi |      700m |
+# | studio     |           96Mi |         75m |        144Mi |      150m |
+# | auth       |           96Mi |         75m |        144Mi |      150m |
+# | rest       |           96Mi |         75m |        144Mi |      150m |
+# | realtime   |           96Mi |         75m |        144Mi |      150m |
+# | meta       |           64Mi |         50m |         96Mi |      100m |
+# | storage    |           96Mi |         75m |        144Mi |      150m |
+# | imgproxy   |           96Mi |         75m |        144Mi |      150m |
+# | kong       |           96Mi |         75m |        144Mi |      150m |
+# | analytics  |           64Mi |         50m |         96Mi |      100m |
+# | vector     |           64Mi |         50m |         96Mi |      100m |
+# | functions  |           96Mi |         75m |        144Mi |      150m |
+# | minio      |           96Mi |         75m |        144Mi |      150m |
+# | **Totals** |     **1824Mi** |   **1125m** |   **2736Mi** | **2350m** |
