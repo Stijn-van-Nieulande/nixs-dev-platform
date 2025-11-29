@@ -1,6 +1,20 @@
 supabase:
   secret:
     name: supabase-secrets-test-env
+    jwt:
+      secretRef: "supabase-secrets-test-env"
+    db:
+      secretRef: "supabase-secrets-test-env"
+    analytics:
+      secretRef: "supabase-secrets-test-env"
+    smtp:
+      secretRef: "supabase-secrets-test-env"
+    dashboard:
+      secretRef: "supabase-secrets-test-env"
+    realtime:
+      secretRef: "supabase-secrets-test-env"
+    meta:
+      secretRef: "supabase-secrets-test-env"
   studio:
     environment:
       DEFAULT_ORGANIZATION_NAME: NIXS Entertainment
