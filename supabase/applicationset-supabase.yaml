@@ -20,6 +20,7 @@ spec:
         targetRevision: HEAD
         path: supabase/charts/supabase-wrapper # use the wrapper chart in this repo
         helm:
+          dependencyUpdate: true
           valueFiles:
             - "../../charts/supabase-wrapper/values.yaml" # relative to the chart path
             - "../../environments/{{path.basename}}/values.yaml" # relative to the chart path
