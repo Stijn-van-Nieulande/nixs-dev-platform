@@ -201,16 +201,16 @@ supabase:
           paths:
             - path: /
               pathType: Prefix
-    resources:
-      requests:
-        memory: "96Mi"
-        cpu: "75m"
-      limits:
-        memory: "144Mi"
-        cpu: "150m"
+    # resources: # TODO: Memory leaks prevent from setting fixed resources here
+    #   requests:
+    #     memory: "96Mi"
+    #     cpu: "75m"
+    #   limits:
+    #     memory: "144Mi"
+    #     cpu: "150m"
 
   analytics:
-    enabled: false # TODO: OOM bugs
+    enabled: false # TODO: Disabled for now due to low memmory
     image:
       tag: 1.22.6
     livenessProbe:
@@ -227,6 +227,7 @@ supabase:
         cpu: "100m"
 
   vector:
+    enabled: false # TODO: Disabled for now due to low memmory
     image:
       tag: 0.28.1-alpine
     livenessProbe:
@@ -271,6 +272,8 @@ supabase:
 #     memory: "144Mi"
 #     cpu: "150m"
 
+# Some profiles from ChatGPT:
+
 # Minimal profile (requests ≈ 1184 Mi, limits ≈ 1776 Mi)
 # | Service    | request memory | request CPU | limit memory | limit CPU |
 # | ---------- | -------------: | ----------: | -----------: | --------: |
@@ -306,3 +309,27 @@ supabase:
 # | functions  |           96Mi |         75m |        144Mi |      150m |
 # | minio      |           96Mi |         75m |        144Mi |      150m |
 # | **Totals** |     **1824Mi** |   **1125m** |   **2736Mi** | **2350m** |
+
+# ------
+
+# Ultra-compact profile (recommended for 3 instances on one 8GiB node)
+# Disabled by default: analytics, vector (enable only if you have extra memory).
+# | Service       | request memory | request CPU | limit memory | limit CPU |
+# | ------------- | -------------: | ----------: | -----------: | --------: |
+# | db (Postgres) |          512Mi |        200m |       1024Mi |      500m |
+# | studio        |           48Mi |         25m |         96Mi |      100m |
+# | auth          |           48Mi |         25m |         96Mi |      100m |
+# | rest          |           48Mi |         25m |         96Mi |      100m |
+# | realtime      |           64Mi |         50m |        128Mi |      200m |
+# | meta          |           24Mi |         25m |         48Mi |       50m |
+# | storage       |           64Mi |         50m |        128Mi |      200m |
+# | imgproxy      |           48Mi |         50m |        128Mi |      200m |
+# | kong          |           48Mi |         50m |        128Mi |      200m |
+# | functions     |           64Mi |         50m |        128Mi |      200m |
+# | minio         |           96Mi |         50m |        192Mi |      200m |
+
+# Totals (Ultra-compact)
+# Requests (memory): 512 + 48 + 48 + 48 + 64 + 24 + 64 + 48 + 48 + 64 + 96      = 1064 Mi (≈ 1.04 GiB)
+# Limits (memory): 1024 + 96 + 96 + 96 + 128 + 48 + 128 + 128 + 128 + 128 + 192 = 2192 Mi (≈ 2.14 GiB)
+# Requests (CPU): 200 + 25 + 25 + 25 + 50 + 25 + 50 + 50 + 50 + 50 + 50         =  600  m (0.6 CPU)
+# Limits (CPU): 500 + 100 + 100 + 100 + 200 + 50 + 200 + 200 + 200 + 200 + 200  = 2050  m (2.05 CPU)
