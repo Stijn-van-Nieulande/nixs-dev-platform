@@ -25,8 +25,9 @@ supabase:
       SUPABASE_PUBLIC_URL: https://supabase.test-domain.ndev.stijndevelopment.nl
   auth:
     environment:
-      API_EXTERNAL_URL: https://supabase.test-domain.ndev.stijndevelopment.nl
-      GOTRUE_SITE_URL: https://supabase.test-domain.ndev.stijndevelopment.nl
+      API_EXTERNAL_URL: "https://supabase.test-domain.ndev.stijndevelopment.nl"
+      GOTRUE_SITE_URL: "https://supabase.test-domain.ndev.stijndevelopment.nl"
+      GOTRUE_URI_ALLOW_LIST: "https://supabase.test-domain.ndev.stijndevelopment.nl"
       GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
       GOTRUE_MAILER_AUTOCONFIRM: "true"
       GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@supabase.test-domain.ndev.stijndevelopment.nl"
@@ -35,6 +36,10 @@ supabase:
       GOTRUE_SMTP_SENDER_NAME: "your-mail@supabase.test-domain.ndev.stijndevelopment.nl"
   kong:
     ingress:
+      tls:
+        - secretName: supabase-tls-test-env
+          hosts:
+            - supabase.test-domain.ndev.stijndevelopment.nl
       hosts:
         - host: supabase.test-domain.ndev.stijndevelopment.nl
           paths:
