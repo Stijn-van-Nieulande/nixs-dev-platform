@@ -22,11 +22,11 @@ supabase:
     environment:
       DEFAULT_ORGANIZATION_NAME: NIXS Entertainment
       DEFAULT_PROJECT_NAME: Slide
-      SUPABASE_PUBLIC_URL: http://supabase.test-domain.ndev.stijndevelopment.nl
+      SUPABASE_PUBLIC_URL: https://supabase.test-domain.ndev.stijndevelopment.nl
   auth:
     environment:
-      API_EXTERNAL_URL: http://supabase.test-domain.ndev.stijndevelopment.nl
-      GOTRUE_SITE_URL: http://supabase.test-domain.ndev.stijndevelopment.nl
+      API_EXTERNAL_URL: https://supabase.test-domain.ndev.stijndevelopment.nl
+      GOTRUE_SITE_URL: https://supabase.test-domain.ndev.stijndevelopment.nl
       GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
       GOTRUE_MAILER_AUTOCONFIRM: "true"
       GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@supabase.test-domain.ndev.stijndevelopment.nl"
