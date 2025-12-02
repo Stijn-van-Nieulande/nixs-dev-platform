@@ -1,0 +1,54 @@
+supabase:
+  secret:
+    name: supabase-secrets-yeet
+    jwt:
+      secretRef: "supabase-secrets-yeet"
+    db:
+      secretRef: "supabase-secrets-yeet"
+    analytics:
+      secretRef: "supabase-secrets-yeet"
+    smtp:
+      secretRef: "supabase-secrets-yeet"
+    dashboard:
+      secretRef: ""
+      username: "test"
+      password: "test"
+      openAiApiKey: "super_secret_key"
+    realtime:
+      secretRef: "supabase-secrets-yeet"
+    meta:
+      secretRef: "supabase-secrets-yeet"
+  studio:
+    environment:
+      DEFAULT_ORGANIZATION_NAME: NIXS Entertainment
+      DEFAULT_PROJECT_NAME: Slide
+      SUPABASE_PUBLIC_URL: https://supabase.yeeter.ndev.stijndevelopment.nl
+  auth:
+    environment:
+      API_EXTERNAL_URL: "https://supabase.yeeter.ndev.stijndevelopment.nl"
+      GOTRUE_SITE_URL: "https://supabase.yeeter.ndev.stijndevelopment.nl"
+      GOTRUE_URI_ALLOW_LIST: "https://supabase.yeeter.ndev.stijndevelopment.nl"
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_MAILER_AUTOCONFIRM: "true"
+      GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@supabase.yeeter.ndev.stijndevelopment.nl"
+      GOTRUE_SMTP_HOST: "smtp.supabase.yeeter.ndev.stijndevelopment.nl"
+      GOTRUE_SMTP_PORT: "587"
+      GOTRUE_SMTP_SENDER_NAME: "your-mail@supabase.yeeter.ndev.stijndevelopment.nl"
+  kong:
+    ingress:
+      tls:
+        - secretName: supabase-tls-yeet
+          hosts:
+            - supabase.yeeter.ndev.stijndevelopment.nl
+      hosts:
+        - host: supabase.yeeter.ndev.stijndevelopment.nl
+          paths:
+            - path: /
+              pathType: Prefix
+# ------------------------------
+labels:
+  owner: Stijn
+  ticket: 
+app:
+  branch: main
+  domain: yeeter
