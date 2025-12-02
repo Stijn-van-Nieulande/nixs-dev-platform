@@ -202,13 +202,13 @@ supabase:
           paths:
             - path: /
               pathType: Prefix
-    resources: # TODO: Memory leaks prevent from setting fixed resources here
-      requests:
-        memory: "300Mi"
-        cpu: "75m"
-      limits:
-        memory: "500Mi"
-        cpu: "150m"
+    # resources: # TODO: Memory leaks prevent from setting fixed resources here
+    #   requests:
+    #     memory: "300Mi"
+    #     cpu: "75m"
+    #   limits:
+    #     memory: "500Mi"
+    #     cpu: "150m"
 
   analytics:
     enabled: false # TODO: Disabled for now due to low memmory
