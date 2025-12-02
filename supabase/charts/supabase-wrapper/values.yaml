@@ -55,13 +55,13 @@ supabase:
       enabled: true
       storageClassName: longhorn
       size: 2Gi
-    # resources:
-    #   requests:
-    #     memory: "768Mi"
-    #     cpu: "300m"
-    #   limits:
-    #     memory: "1152Mi"
-    #     cpu: "700m"
+    resources:
+      requests:
+        memory: "768Mi"
+        cpu: "300m"
+      limits:
+        memory: "1152Mi"
+        cpu: "700m"
 
   studio:
     image:
@@ -102,13 +102,13 @@ supabase:
   rest:
     image:
       tag: v13.0.7
-    resources:
-      requests:
-        memory: "96Mi"
-        cpu: "75m"
-      limits:
-        memory: "144Mi"
-        cpu: "150m"
+    # resources:
+    #   requests:
+    #     memory: "96Mi"
+    #     cpu: "75m"
+    #   limits:
+    #     memory: "144Mi"
+    #     cpu: "150m"
 
   realtime:
     image:
