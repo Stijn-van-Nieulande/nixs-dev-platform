@@ -204,7 +204,7 @@ supabase:
               pathType: Prefix
     resources: # TODO: Memory leaks prevent from setting fixed resources here
       requests:
-        memory: "96Mi"
+        memory: "300Mi"
         cpu: "75m"
       limits:
         memory: "500Mi"
