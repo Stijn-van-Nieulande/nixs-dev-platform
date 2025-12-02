@@ -71,13 +71,13 @@ supabase:
       DEFAULT_PROJECT_NAME: Default Project
       SUPABASE_PUBLIC_URL: http://supabase.something.tld
       NEXT_PUBLIC_ENABLE_LOGS: true
-    resources:
-      requests:
-        memory: "96Mi"
-        cpu: "75m"
-      limits:
-        memory: "144Mi"
-        cpu: "150m"
+    # resources:
+    #   requests:
+    #     memory: "96Mi"
+    #     cpu: "75m"
+    #   limits:
+    #     memory: "144Mi"
+    #     cpu: "150m"
 
   auth:
     image:
