@@ -102,13 +102,13 @@ supabase:
   rest:
     image:
       tag: v13.0.7
-    # resources:
-    #   requests:
-    #     memory: "96Mi"
-    #     cpu: "75m"
-    #   limits:
-    #     memory: "144Mi"
-    #     cpu: "150m"
+    resources:
+      requests:
+        memory: "96Mi"
+        cpu: "75m"
+      limits:
+        memory: "144Mi"
+        cpu: "150m"
 
   realtime:
     image:
