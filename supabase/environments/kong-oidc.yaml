@@ -1,0 +1,12 @@
+    apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: "kong-oidc-testie"
+  namespace: "testie"
+plugin: openid-connect
+config:
+  issuer: "https://auth.ndev.stijndevelopment.nl"
+  client_id: "AI1fUNP6D8MUwk25L6ugg8FBscoMapDjrDBhjz6h"
+  client_secret: "gyPJ88FkYAgzExZOa7cqqmjKSNQ3CdLgOl2yLkZWolHihc79uriGvz43NXFHkQGRFfYtJ5OU8Qq6uCHq45JAXXnR6Jes75sQo0jthw1nEdfpSdRg78EJEPhLG30VnyLt"
+  scope: "openid email profile"
+  redirect_uri: "https://supabase.testje.ndev.stijndevelopment.nl/_oauth/callback"
